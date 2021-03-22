@@ -88,12 +88,12 @@ class SmartPoster(uri: UriRecord?, title: TextRecord?, action: com.example.tagnf
     val title: TextRecord?
         get() = mTitleRecord
 
-    override fun str(): String? {
+     override fun str(): String? {
         return if (mTitleRecord != null) {
             mTitleRecord.str().toString() + "\n" + mUriRecord.str()
-        } else {
+        } else ({
             mUriRecord.str()
-        }
+        }).toString()
     }
 
     enum class RecommendedAction(private val byte: Byte) {
@@ -101,25 +101,25 @@ class SmartPoster(uri: UriRecord?, title: TextRecord?, action: com.example.tagnf
                 2.toByte());
 
         companion object {
-            val LOOKUP: ImmutableMap<Byte, com.example.tagnfckotlin.record.SmartPoster.RecommendedAction>? = null
+            var LOOKUP: ImmutableMap<Byte, RecommendedAction>? = null
 
             init {
-                val builder: ImmutableMap.Builder<Byte, com.example.tagnfckotlin.record.SmartPoster.RecommendedAction> = ImmutableMap.builder()
-                for (action in com.example.tagnfckotlin.record.SmartPoster.RecommendedAction.values()) {
+                val builder: ImmutableMap.Builder<Byte, RecommendedAction> = ImmutableMap.builder()
+                for (action in values()) {
                     com.example.tagnfckotlin.record.builder.put(com.example.tagnfckotlin.record.action.getByte(), com.example.tagnfckotlin.record.action)
                 }
-                com.example.tagnfckotlin.record.SmartPoster.RecommendedAction.Companion.LOOKUP = com.example.tagnfckotlin.record.builder.build()
+                LOOKUP = com.example.tagnfckotlin.record.builder.build()
             }
         }
 
     }
 
     companion object {
-        fun parse(record: NdefRecord): com.example.tagnfckotlin.record.SmartPoster {
-            Preconditions.checkArgument(record.tnf == NdefRecord.TNF_WELL_KNOWN)
-            Preconditions.checkArgument(Arrays.equals(record.type, NdefRecord.RTD_SMART_POSTER))
+        fun parse(record: NdefRecord?): com.example.tagnfckotlin.record.SmartPoster {
+            Preconditions.checkArgument(record?.tnf ?:  == NdefRecord.TNF_WELL_KNOWN)
+            Preconditions.checkArgument(Arrays.equals(record?.type, NdefRecord.RTD_SMART_POSTER))
             return try {
-                val subRecords = NdefMessage(record.payload)
+                val subRecords = NdefMessage(record?.payload)
                 com.example.tagnfckotlin.record.SmartPoster.Companion.parse(subRecords.records)
             } catch (e: FormatException) {
                 throw IllegalArgumentException(e)
@@ -130,8 +130,8 @@ class SmartPoster(uri: UriRecord?, title: TextRecord?, action: com.example.tagnf
             return try {
                 val records: Iterable<ParsedNdefRecord> = NdefMessageParser.getRecords(recordsRaw)
                 val uri: UriRecord = Iterables.getOnlyElement(Iterables.filter(records, UriRecord::class.java))
-                val title: TextRecord? = com.example.tagnfckotlin.record.SmartPoster.Companion.getFirstIfExists<T>(records, TextRecord::class.java)
-                val action: com.example.tagnfckotlin.record.SmartPoster.RecommendedAction = com.example.tagnfckotlin.record.SmartPoster.Companion.parseRecommendedAction(recordsRaw)
+                val title: TextRecord? = com.example.tagnfckotlin.record.SmartPoster.Companion.getFirstIfExists(records, TextRecord::class.java)
+                val action: RecommendedAction? = com.example.tagnfckotlin.record.SmartPoster.Companion.parseRecommendedAction(recordsRaw)
                 val type: String? = com.example.tagnfckotlin.record.SmartPoster.Companion.parseType(recordsRaw)
                 com.example.tagnfckotlin.record.SmartPoster(uri, title, action, type.toString())
             } catch (e: NoSuchElementException) {
@@ -161,9 +161,9 @@ class SmartPoster(uri: UriRecord?, title: TextRecord?, action: com.example.tagnf
             return instance
         }
 
-        private fun getByType(type: ByteArray, records: Array<NdefRecord>): NdefRecord? {
-            for (record in records) {
-                if (Arrays.equals(type, record.type)) {
+        private fun getByType(type: ByteArray, records: Array<NdefRecord?>?): NdefRecord? {
+            for (record in records!!) {
+                if (Arrays.equals(type, record?.type)) {
                     return record
                 }
             }
@@ -171,12 +171,12 @@ class SmartPoster(uri: UriRecord?, title: TextRecord?, action: com.example.tagnf
         }
 
         private val ACTION_RECORD_TYPE = byteArrayOf('a'.toByte(), 'c'.toByte(), 't'.toByte())
-        private fun parseRecommendedAction(records: Array<NdefRecord>): RecommendedAction? {
+        private fun parseRecommendedAction(records: Array<NdefRecord?>?): RecommendedAction? {
             val record: NdefRecord = com.example.tagnfckotlin.record.SmartPoster.Companion.getByType(com.example.tagnfckotlin.record.SmartPoster.Companion.ACTION_RECORD_TYPE, records)
                     ?: return com.example.tagnfckotlin.record.SmartPoster.RecommendedAction.UNKNOWN
             val action = record.payload[0]
-            return if (com.example.tagnfckotlin.record.SmartPoster.RecommendedAction.Companion.LOOKUP.containsKey(action)) {
-                com.example.tagnfckotlin.record.SmartPoster.RecommendedAction.Companion.LOOKUP.get(action)
+            return if (com.example.tagnfckotlin.record.SmartPoster.RecommendedAction.Companion.LOOKUP?.containsKey(action) == true) {
+                com.example.tagnfckotlin.record.SmartPoster.RecommendedAction.Companion.LOOKUP!!.get(action)
             } else com.example.tagnfckotlin.record.SmartPoster.RecommendedAction.UNKNOWN
         }
 

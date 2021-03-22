@@ -4,5 +4,5 @@
 package com.example.tagnfckotlin.record
 
 interface ParsedNdefRecord {
-    fun str()
+    fun str(): String?
 }

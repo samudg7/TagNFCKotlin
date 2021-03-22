@@ -19,7 +19,7 @@ package com.example.tagnfckotlin.record
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-import ParsedNdefRecord
+//import ParsedNdefRecord
 import android.nfc.NdefRecord
 import com.google.common.base.Preconditions
 import java.io.UnsupportedEncodingException
@@ -38,7 +38,7 @@ class TextRecord(languageCode: String?, text: String?) : ParsedNdefRecord {
     val languageCode: String
     val text: String
 
-    override fun str(): String? {
+    override fun str(): String {
         return text
     }
 
@@ -62,7 +62,9 @@ class TextRecord(languageCode: String?, text: String?) : ParsedNdefRecord {
                   *
                   * Bits 5 to 0 are the length of the IANA language code.
                   */
-                val textEncoding = if (payload[0] and 128 == 0) "UTF-8" else "UTF-16"
+                val textEncoding = if (payload[0].and(128.toByte()) == 0) {
+                    "UTF-8"
+                } else "UTF-16"
                 val languageCodeLength: Byte = payload[0] and 63
                 val languageCode = String(payload, 1, languageCodeLength.toInt(), "US-ASCII")
                 val text = String(payload, languageCodeLength + 1,
@@ -85,7 +87,7 @@ class TextRecord(languageCode: String?, text: String?) : ParsedNdefRecord {
     }
 
     init {
-        this.languageCode = Preconditions.checkNotNull(languageCode)
-        this.text = Preconditions.checkNotNull(text)
+        this.languageCode = Preconditions.checkNotNull(languageCode).toString()
+        this.text = Preconditions.checkNotNull(text).toString()
     }
 }

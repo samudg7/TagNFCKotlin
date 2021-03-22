@@ -47,8 +47,8 @@ object NdefMessageParser {
                 } else {
                     //elements.add(object : ParsedNdefRecord() {
                     elements.add(object : ParsedNdefRecord {
-                        override fun str() {
-                            if (record != null) return String(record.payload)
+                        override fun str(): String {
+                            return record?.let { String(bytes = it?.payload) }.toString()
                         }
                     })
                 }

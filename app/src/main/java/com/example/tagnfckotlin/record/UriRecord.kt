@@ -19,7 +19,8 @@ package com.example.tagnfckotlin.record
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import ParsedNdefRecord
+//import ParsedNdefRecord
+import com.example.tagnfckotlin.record.ParsedNdefRecord
 import android.net.Uri
 import android.nfc.NdefRecord
 import com.google.common.base.Preconditions
@@ -33,10 +34,9 @@ import java.util.*
 /**
  * A parsed record containing a Uri.
  */
-class UriRecord(uri: Uri?) : ParsedNdefRecord {
+class UriRecord(uri: Uri) : ParsedNdefRecord {
     val uri: Uri
-
-    override fun str(): String? {
+    override fun str(): String {
         return uri.toString()
     }
 
@@ -50,7 +50,7 @@ class UriRecord(uri: Uri?) : ParsedNdefRecord {
          * This is a mapping of "URI Identifier Codes" to URI string prefixes,
          * per section 3.2.2 of the NFC Forum URI Record Type Definition document.
          */
-        private val URI_PREFIX_MAP: BiMap<Byte, String> = ImmutableBiMap.< Byte, String>builder<kotlin.Byte?, kotlin.String?>()
+        private val URI_PREFIX_MAP: BiMap<Byte, String> = ImmutableBiMap.builder<Byte, String>()
         .put(0x00 as kotlin.Byte, "")
         .put(0x01 as kotlin.Byte, "http://www.")
         .put(0x02 as kotlin.Byte, "https://www.")
@@ -123,8 +123,8 @@ class UriRecord(uri: Uri?) : ParsedNdefRecord {
          * payload[1]...payload[payload.length - 1] contains the rest of
          * the URI.
          */
-            val prefix: String = URI_PREFIX_MAP.get(payload[0])
-            val fullUri: ByteArray = Bytes.concat(prefix.toByteArray(Charset.forName("UTF-8")), Arrays.copyOfRange(payload, 1,
+            val prefix: String? = URI_PREFIX_MAP.get(payload[0])
+            val fullUri: ByteArray = Bytes.concat(prefix?.toByteArray(Charset.forName("UTF-8")), Arrays.copyOfRange(payload, 1,
                     payload.size))
             val uri = Uri.parse(String(fullUri, Charset.forName("UTF-8")))
             return UriRecord(uri)
