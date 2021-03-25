@@ -31,10 +31,8 @@ import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Iterables
 import java.util.stream.DoubleStream.builder
 
-//import android.support.v4.content.ContextCompat;
-//import com.ssaurel.nfcreader.model.History;
-//import com.ssaurel.nfcreader.utils.Utils;
-//import java.lang.Iterable;
+
+
 /**
  * A representation of an NFC Forum "Smart Poster".
  */
