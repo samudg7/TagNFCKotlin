@@ -13,8 +13,6 @@ import java.util.*
 import com.google.common.base.Preconditions
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Iterables
-import java.util.stream.DoubleStream.builder
-
 
 
 /**
@@ -97,12 +95,12 @@ class SmartPoster(uri: UriRecord?, title: TextRecord?, action: com.example.tagnf
     }
 
     companion object {
-        fun parse(record: NdefRecord?): com.example.tagnfckotlin.record.SmartPoster {
-            Preconditions.checkArgument(record?.tnf ?:  == NdefRecord.TNF_WELL_KNOWN)
-            Preconditions.checkArgument(Arrays.equals(record?.type, NdefRecord.RTD_SMART_POSTER))
+        fun parse(record: NdefRecord?): SmartPoster {
+            Preconditions.checkArgument(record!!.tnf == NdefRecord.TNF_WELL_KNOWN)
+            Preconditions.checkArgument(Arrays.equals(record.type, NdefRecord.RTD_SMART_POSTER))
             return try {
-                val subRecords = NdefMessage(record?.payload)
-                com.example.tagnfckotlin.record.SmartPoster.Companion.parse(subRecords.records)
+                val subRecords = NdefMessage(record.payload)
+                parse(subRecords.records)
             } catch (e: FormatException) {
                 throw IllegalArgumentException(e)
             }
@@ -123,7 +121,8 @@ class SmartPoster(uri: UriRecord?, title: TextRecord?, action: com.example.tagnf
 
         fun isPoster(record: NdefRecord?): Boolean {
             return try {
-                com.example.tagnfckotlin.record.SmartPoster.Companion.parse(record)
+                //com.example.tagnfckotlin.record.SmartPoster.Companion.parse(record)
+                parse(record)
                 true
             } catch (e: IllegalArgumentException) {
                 false
