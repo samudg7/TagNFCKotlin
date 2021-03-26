@@ -42,9 +42,10 @@ class TextRecord(languageCode: String?, text: String?) : ParsedNdefRecord {
                   *
                   * Bits 5 to 0 are the length of the IANA language code.
                   */
-                val textEncoding = if (payload[0].and(128.toByte()) == 0) {
-                    "UTF-8"
-                } else "UTF-16"
+                //val textEncoding = if (payload[0].and(128.toByte()) == 0) {
+                  //  "UTF-8"
+                //} else "UTF-16"
+                val textEncoding= "UTF-8"
                 val languageCodeLength: Byte = payload[0] and 63
                 val languageCode = String(payload, 1, languageCodeLength.toInt(), "US-ASCII")
                 val text = String(payload, languageCodeLength + 1,
@@ -54,6 +55,10 @@ class TextRecord(languageCode: String?, text: String?) : ParsedNdefRecord {
                 // should never happen unless we get a malformed tag.
                 throw IllegalArgumentException(e)
             }
+        }
+
+        private fun String(bytes: ByteArray?, offset: Int, length: Int, charset: String): String {
+            TODO("Not yet implemented")
         }
 
         fun isText(record: NdefRecord): Boolean {
