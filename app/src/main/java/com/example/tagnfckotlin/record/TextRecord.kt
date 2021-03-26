@@ -59,6 +59,7 @@ class TextRecord(languageCode: String?, text: String?) : ParsedNdefRecord {
 
         private fun String(bytes: ByteArray?, offset: Int, length: Int, charset: String): String {
             TODO("Not yet implemented")
+
         }
 
         fun isText(record: NdefRecord): Boolean {

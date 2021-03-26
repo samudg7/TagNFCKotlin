@@ -1,18 +1,18 @@
 package com.example.tagnfckotlin.record
 
-import android.nfc.FormatException
-import android.nfc.NdefMessage
-import android.nfc.NdefRecord
-import com.example.tagnfckotlin.parser.NdefMessageParser
-import java.util.*
 //import com.google.common.collect.ImmutableMap
 //import com.google.common.collect.Iterables
 //class com.example.tagnfckotlin.record.SmartPoster {
 //}
 
+import android.nfc.FormatException
+import android.nfc.NdefMessage
+import android.nfc.NdefRecord
+import com.example.tagnfckotlin.parser.NdefMessageParser
 import com.google.common.base.Preconditions
 import com.google.common.collect.ImmutableMap
 import com.google.common.collect.Iterables
+import java.util.*
 
 
 /**
@@ -86,10 +86,22 @@ class SmartPoster(uri: UriRecord?, title: TextRecord?, action: com.example.tagnf
             init {
                 val builder: ImmutableMap.Builder<Byte, RecommendedAction> = ImmutableMap.builder()
                 for (action in values()) {
-                    com.example.tagnfckotlin.record.builder.put(com.example.tagnfckotlin.record.action.getByte(), com.example.tagnfckotlin.record.action)
+                    //com.example.tagnfckotlin.record.builder.put(com.example.tagnfckotlin.record.action.getByte(), com.example.tagnfckotlin.record.action)
+                    builder.put(action.getByte(), action)
+
                 }
-                LOOKUP = com.example.tagnfckotlin.record.builder.build()
+                LOOKUP = builder.build()
             }
+
+        }
+
+        private var mAction: Byte = 0
+        private fun RecommendedAction(`val`: Byte) {
+            mAction = `val`
+        }
+        private fun getByte(): Byte {
+            
+            return mAction
         }
 
     }
