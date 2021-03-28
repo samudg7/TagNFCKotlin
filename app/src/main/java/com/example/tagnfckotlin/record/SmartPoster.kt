@@ -172,7 +172,7 @@ class SmartPoster(uri: UriRecord?, title: TextRecord?, action: com.example.tagnf
                 com.example.tagnfckotlin.record.SmartPoster.RecommendedAction.Companion.LOOKUP!!.get(action)
             } else com.example.tagnfckotlin.record.SmartPoster.RecommendedAction.UNKNOWN
         }
-
+        
         private val TYPE_TYPE = byteArrayOf('t'.toByte())
         private fun parseType(records: Array<NdefRecord?>?): String? {
             val type: NdefRecord = com.example.tagnfckotlin.record.SmartPoster.Companion.getByType(com.example.tagnfckotlin.record.SmartPoster.Companion.TYPE_TYPE, records)

@@ -1,6 +1,5 @@
 package com.example.tagnfckotlin
 
-import com.example.tagnfckotlin.parser.NdefMessageParser
 import android.app.PendingIntent
 import android.content.Intent
 import android.nfc.NdefMessage
@@ -16,7 +15,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.tagnfckotlin.R
+import com.example.tagnfckotlin.parser.NdefMessageParser
 import com.example.tagnfckotlin.record.ParsedNdefRecord
 import kotlin.experimental.and
 
